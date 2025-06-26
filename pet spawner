@@ -1,30 +1,60 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPetEvent")
+local Workspace = game:GetService("Workspace")
 
--- GUI erstellen
+local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPlantEvent")
+local plantModels = ReplicatedStorage:WaitForChild("PlantModels")
+
+spawnEvent.OnServerEvent:Connect(function(player, plantName, position)
+	local model = plantModels:FindFirstChild(plantName)
+	if model and model:IsA("Model") then
+		local clone = model:Clone()
+		clone:SetPrimaryPartCFrame(CFrame.new(position))
+		clone.Parent = Workspace
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPlantEvent")
+
+local button = script.Parent
+local spawnPosition = Vector3.new(0, 2, 0) -- Position anpassen!
+
+button.MouseButton1Click:Connect(function()
+	spawnEvent:FireServer("Tomato", spawnPosition)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPlantEvent")
+
+local plantNames = {"Tomato", "Carrot", "Sunflower"}
 local screenGui = script.Parent
-local petList = {"Bunny", "Dog", "Cat", "Raccoon", "butterfly", "dragonfly"}
 
-for _, petName in ipairs(petList) do
+for i, plant in ipairs(plantNames) do
 	local button = Instance.new("TextButton")
-	button.Size = UDim2.new(0, 100, 0, 50)
-	button.Position = UDim2.new(0, 10, 0, 60 * (_ - 1) + 10)
-	button.Text = "Spawn " dragonfly butterfly Raccoon 
+	button.Size = UDim2.new(0, 150, 0, 40)
+	button.Position = UDim2.new(0, 20, 0, 20 + (i - 1) * 50)
+	button.BackgroundColor3 = Color3.fromRGB(120, 200, 120)
+	button.Text = "Spawn " .. plant
 	button.Parent = screenGui
 
 	button.MouseButton1Click:Connect(function()
-		spawnEvent:FireServer(petName)
-	end)
-end
+		local spawnPosition = Vector3.new(math.random(-10, 10), 1, math.random(-10, 10)) -- zufällige Nähe
+		spawnEvent:FireServer(plant, spawnPosition)
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPetEvent")
+local Workspace = game:GetService("Workspace")
 
-spawnEvent.OnServerEvent:Connect(function(player, petName)
-	local petModel = ReplicatedStorage:FindFirstChild(petName)
-	if petModel and petModel:IsA("Model") then
-		local petClone = petModel:Clone()
-		petClone.Name = player.Name .. "'s Pet"
-		petClone:SetPrimaryPartCFrame(player.Character.HumanoidRootPart.CFrame * CFrame.new(3, 0, 0))
-		petClone.Parent = workspace
-	end
-end)
+local spawnEvent = ReplicatedStorage:WaitForChild("SpawnPlantEvent")
+local plantModels = ReplicatedStorage:WaitForChild("PlantModels")
+
+spawnEvent.OnServerEvent:Connect(function(player, plantName, position)
+	local template = plantModels:FindFirstChild(plantName)
+	if template and template:IsA("Model") then
+		local clone = template:Clone()
+		if not clone.PrimaryPart then
+			warn("Model '" .. plantName .. "' hat keinen PrimaryPart.")
+			return
+		end
+		clone:SetPrimaryPartCFrame(CFrame.new(position))
+		clone.Parent = Workspace
+local colors = {
+	Tomato = Color3.fromRGB(255, 100, 100),
+	Carrot = Color3.fromRGB(255, 165, 0),
+	Sunflower = Color3.fromRGB(255, 255, 100),
+}
+
+button.BackgroundColor3 = colors[plant] or Color3.fromRGB(200, 200, 200)
