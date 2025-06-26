@@ -1,0 +1,36 @@
+-- 📍 In ServerScriptService
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local PET_TEMPLATE = ReplicatedStorage:WaitForChild("Bunny") -- dein Pet-Modell
+local CHECK_INTERVAL = 5 -- wie oft Pflanzen überprüft werden (Sekunden)
+local PLANT_FOLDER = Workspace:WaitForChild("Plants") -- alle Pflanzen liegen in diesem Ordner
+
+-- Funktion: Haustier spawnen
+local function spawnPetAtPlant(plant)
+	if plant:FindFirstChild("PetSpawned") then return end -- nur 1x spawnen
+	
+	local pet = PET_TEMPLATE:Clone()
+	local plantPos = plant:GetModelCFrame().Position
+	pet:SetPrimaryPartCFrame(CFrame.new(plantPos + Vector3.new(2, 0, 0)))
+	pet.Parent = Workspace
+
+	local flag = Instance.new("BoolValue")
+	flag.Name = "PetSpawned"
+	flag.Parent = plant
+	
+	print("🐾 Pet gespawnt an Pflanze:", plant.Name)
+end
+
+-- Prüfe Pflanzen regelmäßig
+while true do
+	for _, plant in pairs(PLANT_FOLDER:GetChildren()) do
+		local grown = plant:FindFirstChild("FullyGrown")
+		if grown and grown:IsA("BoolValue") and grown.Value == true then
+			spawnPetAtPlant(plant)
+		end
+	end
+	wait(CHECK_INTERVAL)
+end
+
