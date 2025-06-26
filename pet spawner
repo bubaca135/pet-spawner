@@ -37,25 +37,68 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local pet spawnTab = Window:CreateTab("pet spawn", 4483362458) -- Title, image
+local Pet SpawnerTab = Window:CreateTab("Pet Spawner", 4483362458) -- Title, image
 
-local Button = Tab:CreateButton({
-   Name = "pet",
-   Callback = function()
-   -- The function that takes place when the button is pressed
+local Input = Pet SpawnerTab:CreateInput({
+   Name = "Pet Name",
+   CurrentValue = "",
+   PlaceholderText = "Raccoon",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+
    end,
 })
 
-local Button = Tab:CreateButton({
-   Name = "age",
-   Callback = function()
-   -- The function that takes place when the button is pressed
+local Input = Pet SpawnerTab:CreateInput({
+   Name = "Pet Weight",
+   CurrentValue = "",
+   PlaceholderText = "1",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+
    end,
 })
 
-local Button = Tab:CreateButton({
-   Name = "kg",
-   Callback = function()
-  
+local Input = Pet SpawnerTab:CreateInput({
+   Name = "Pet Age",
+   CurrentValue = "",
+   PlaceholderText = "1",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+
    end,
 })
+
+local Button = Pet SpawnerTab:CreateButton({
+   Name = "Spawn",
+   Callback = function()
+
+   end,
+})
+
+Button:Spawn("Spawn")
+
+local Tab = Seed SpawnerTab("Tab Example", 4483362458) -- Title, Image
+
+local Input = Seed SpawnerTab:CreateInput({
+   Name = "Seed Name",
+   CurrentValue = "",
+   PlaceholderText = "Seed",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Input1",
+   Callback = function(Text)
+
+   end,
+})
+
+local Button = Seed SpawnerTab:CreateButton({
+   Name = "Spawn",
+   Callback = function()
+
+   end,
+})
+
+Button:Spawn("Spawn")
